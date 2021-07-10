@@ -1,9 +1,5 @@
 const mongoose = require("mongoose");
-const User = require("user/models/user.model");
-const role = require("role/models/role.model");
-const perPage = config.PAGINATION_PERPAGE;
-const geolib = require("geolib");
-const sortArray = require("sort-array");
+const User = require("../models/user.model");
 
 const userRepository = {
 

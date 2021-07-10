@@ -1,5 +1,11 @@
 require("dotenv").config();
 
+// core modules
+const {
+  join,
+  resolve
+} = require('path');
+
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
@@ -12,7 +18,7 @@ const { promisify } = require("util");
 
 const { stat, readdir } = require("fs");
 
-const { join } = require("path");
+auth = require(resolve(join(__dirname, 'middleware', 'auth')))();
 
 var corsOptions = {
   origin: "http://localhost:3001",
@@ -55,6 +61,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corsOptions));
+
+
+app.use((req, res, next) => {
+  auth = require(resolve(join(__dirname, 'middleware', "auth")))(req, res, next);
+  app.use(auth.initialize());
+
+  // This is for webservice end
+  if (req.headers['token'] != null) {
+      req.headers['token'] = req.headers['token'];
+  }
+  next();
+});
 
 (async () => {
   // Configure Routes

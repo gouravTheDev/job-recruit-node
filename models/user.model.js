@@ -19,10 +19,10 @@ var UserSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "",
+      default: "Active",
       enum: ["Active", "Inactive"],
     },
-    isDeleted: { type: Boolean, default: false, enum: deleted },
+    isDeleted: { type: Boolean, default: false, enum: [true, false] },
   },
   { timestamps: true }
 );

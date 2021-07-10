@@ -1,7 +1,6 @@
 const User = require("../models/user");
 var jwt = require("jsonwebtoken");
 var expressJwt = require("express-jwt");
-var md5 = require('md5');
 
 exports.signin = (req, res) => {
   const { userid, password } = req.body;
