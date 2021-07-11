@@ -3,10 +3,15 @@ var Schema = mongoose.Schema;
 
 var JobApplicationSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User', default: null },
-    job: { type: Schema.Types.ObjectId, ref: 'Job', default: null },
+    user: { type: Schema.Types.ObjectId, ref: "User", default: null },
+    job: { type: Schema.Types.ObjectId, ref: "Job", default: null },
+    resume: { type: String, default: "" },
     date: { type: Date, default: new Date() },
-    application_status: { type: String, default: "pending", enum: ["pending", "approved", "rejected"] },
+    application_status: {
+      type: String,
+      default: "pending",
+      enum: ["pending", "approved", "rejected"],
+    },
     status: {
       type: String,
       default: "Active",
@@ -16,6 +21,5 @@ var JobApplicationSchema = new Schema(
   },
   { timestamps: true }
 );
-
 
 module.exports = mongoose.model("Job_application", JobApplicationSchema);

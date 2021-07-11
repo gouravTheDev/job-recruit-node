@@ -4,6 +4,19 @@ const multer = require("multer");
 const request_param = multer();
 const jobApplicationController = require("../controllers/job-application.controller");
 
+const Storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "./public/uploads/resume");
+  },
+  filename: (req, file, callback) => {
+    // callback(null, Date.now() + "_" + file.originalname.replace(/\s/g, '_'));
+    callback(null, Date.now() + "_" + file.originalname.replace(/\s/g, "_"));
+  },
+});
+const uploadFile = multer({
+  storage: Storage,
+});
+
 // Job Applications
 router.get(
   "/job-application/my-list",
@@ -37,7 +50,7 @@ router.get(
 // Apply Job
 router.post(
   "/job-application/apply",
-  request_param.any(),
+  uploadFile.any(),
   auth.authenticateAPI,
   async (req, res) => {
     try {

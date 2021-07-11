@@ -7,6 +7,11 @@ class JobApplicationController {
 
   async applyJob(req) {
     try {
+      if (_.has(req, "files")) {
+        if (req.files.length > 0) {
+          req.body.resume = req.files[0].filename;
+        }
+      }
       req.body.user = req.user._id;
       let jobApplication = await jobApplicationRepo.save(req.body);
       if (!_.isEmpty(jobApplication)) {
