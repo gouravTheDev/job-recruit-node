@@ -30,7 +30,7 @@ const JobRepository = {
   getAllByField: async (params) => {
     let record = await Job.find(params)
       .sort({
-        title: 1,
+        createdAt: -1,
       })
       .exec();
     try {

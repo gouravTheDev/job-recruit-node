@@ -51,7 +51,7 @@ router.post(
 
 // Delete Job
 router.post(
-  "/job/delete-job",
+  "/job/delete",
   request_param.any(),
   auth.authenticateAPI,
   async (req, res) => {
@@ -63,4 +63,20 @@ router.post(
     }
   }
 );
+
+// Job Details
+router.get(
+  "/job/details/:id",
+  request_param.any(),
+  auth.authenticateAPI,
+  async (req, res) => {
+    try {
+      const success = await jobController.details(req, res);
+      res.status(success.status).send(success);
+    } catch (error) {
+      res.status(error.status).send(error);
+    }
+  }
+);
+
 module.exports = router;

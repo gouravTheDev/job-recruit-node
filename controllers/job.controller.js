@@ -1,4 +1,5 @@
 const jobRepo = require("../repositories/job.repository");
+const jobAppRepo = require("../repositories/job_application.repository");
 const mongoose = require("mongoose");
 
 class JobController {
@@ -24,7 +25,7 @@ class JobController {
 
   async update(req) {
     try {
-      let jobData = await jobRepo.updateById(req.body.id, req.body);
+      let jobData = await jobRepo.updateById(req.body._id, req.body);
       if (!_.isEmpty(jobData)) {
         return {
           status: 200,
@@ -60,12 +61,43 @@ class JobController {
     }
   }
 
+  async details(req) {
+    try {
+      let jobData = await jobRepo.getById(req.params.id);
+      if (!_.isEmpty(jobData)) {
+        return {
+          status: 200,
+          data: jobData,
+          message: "Job has been deleted",
+        };
+      } else {
+        return { status: 201, data: {}, message: "Record not found!" };
+      }
+    } catch (error) {
+      console.log(error);
+      return { status: 500, data: {}, message: "Something went wrong!" };
+    }
+  }
+
   async list(req) {
     try {
       let jobs = await jobRepo.getAllByField({
         isDeleted: false,
       });
       if (!_.isEmpty(jobs)) {
+        for (var i = 0; i < jobs.length; i++) {
+          let myApplication = await jobAppRepo.getByField({
+            job: mongoose.Types.ObjectId(jobs[i]._id),
+            user: mongoose.Types.ObjectId(req.user._id),
+            isDeleted: false,
+          });
+          jobs[i] = jobs[i].toObject();
+          if (!_.isEmpty(myApplication) && !_.isNull(myApplication)) {
+            jobs[i].isApplied = true;
+          } else {
+            jobs[i].isApplied = false;
+          }
+        }
         return {
           status: 200,
           data: jobs,

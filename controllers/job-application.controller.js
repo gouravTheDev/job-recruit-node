@@ -93,6 +93,24 @@ class JobApplicationController {
       return { status: 500, data: {}, message: "Something went wrong!" };
     }
   }
+
+  async details(req) {
+    try {
+      let jobAppData = await jobApplicationRepo.getById(req.params.id);
+      if (!_.isEmpty(jobAppData)) {
+        return {
+          status: 200,
+          data: jobAppData,
+          message: "Job Application data fetched",
+        };
+      } else {
+        return { status: 201, data: {}, message: "Something went wrong!" };
+      }
+    } catch (error) {
+      console.log(error);
+      return { status: 500, data: {}, message: "Something went wrong!" };
+    }
+  }
 }
 
 module.exports = new JobApplicationController();

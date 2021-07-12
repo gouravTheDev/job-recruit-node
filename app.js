@@ -62,6 +62,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corsOptions));
 
+app.use(express.static('./public'));
+
 
 app.use((req, res, next) => {
   auth = require(resolve(join(__dirname, 'middleware', "auth")))(req, res, next);

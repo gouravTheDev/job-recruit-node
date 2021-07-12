@@ -2,9 +2,11 @@ const mongoose = require("mongoose");
 const JobApplication = require("../models/job_application.model");
 
 const JobApplicationRepository = {
-
   getById: async (id) => {
-    let record = await JobApplication.findById(id).lean().exec();
+    let record = await JobApplication.findById(id)
+      .populate("job")
+      .populate("user")
+      .exec();
     try {
       if (!record) {
         return null;
@@ -16,7 +18,7 @@ const JobApplicationRepository = {
   },
 
   getByField: async (params) => {
-    let record = await JobApplication.findOne(params).exec();
+    let record = await JobApplication.findOne(params).lean().exec();
     try {
       if (!record) {
         return null;
@@ -29,9 +31,12 @@ const JobApplicationRepository = {
 
   getAllByField: async (params) => {
     let record = await JobApplication.find(params)
+      .populate("job")
+      .populate("user")
       .sort({
         title: 1,
       })
+      .lean()
       .exec();
     try {
       if (!record) {

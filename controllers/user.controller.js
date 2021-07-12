@@ -19,27 +19,6 @@ class UserController {
         };
       }
 
-      if (!req.body.phone) {
-        return {
-          status: 201,
-          data: {},
-          message: "Phone is required",
-        };
-      }
-
-      let checkPhone = await userRepo.getByField({
-        isDeleted: false,
-        phone: req.body.phone,
-      });
-
-      if (!_.isEmpty(checkPhone) || !_.isNull(checkPhone)) {
-        return {
-          status: 201,
-          data: {},
-          message: "This phone is already registered",
-        };
-      }
-
       let checkEmail = await userRepo.getByField({
         isDeleted: false,
         email: req.body.email,
@@ -112,7 +91,6 @@ class UserController {
   }
 
   async profileDetails(req) {
-    console.log(req.user);
     try {
       let userId = req.user._id;
       if (userId) {

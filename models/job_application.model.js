@@ -10,7 +10,7 @@ var JobApplicationSchema = new Schema(
     application_status: {
       type: String,
       default: "pending",
-      enum: ["pending", "approved", "rejected"],
+      enum: ["pending", "selected", "rejected"],
     },
     status: {
       type: String,

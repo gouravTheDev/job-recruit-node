@@ -3,7 +3,7 @@ const User = require("../models/user.model");
 
 const userRepository = {
   getById: async (id) => {
-    let user = await User.findById(id).lean().exec();
+    let user = await User.findById(id).exec();
     try {
       if (!user) {
         return null;

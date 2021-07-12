@@ -47,6 +47,21 @@ router.get(
   }
 );
 
+// Job Application details
+router.get(
+  "/job-application/details/:id",
+  request_param.any(),
+  auth.authenticateAPI,
+  async (req, res) => {
+    try {
+      const success = await jobApplicationController.details(req, res);
+      res.status(success.status).send(success);
+    } catch (error) {
+      res.status(error.status).send(error);
+    }
+  }
+);
+
 // Apply Job
 router.post(
   "/job-application/apply",
